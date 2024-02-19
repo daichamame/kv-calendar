@@ -1,0 +1,164 @@
+#:kivy 2.1.0
+MameWidget:
+<MameWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        GridLayout:
+            cols:1
+            rows:3
+            #-----------------------------------------------------------------------
+            # ヘッダ
+            GridLayout:
+                cols:4
+                rows:1
+                size_hint_y:0.15
+                UpperButton:
+                    size_hint_x:0.25
+                    text: "カレンダー"
+                DateLabel:
+                    size_hint_x:0.5
+                    id:lbl_date
+                    text:"日付"
+                UpperButton:
+                    size_hint_x:0.25
+                    text: "閉じる"
+                    on_press: root.exit_dialog()
+            #-----------------------------------------------------------------------
+            # カレンダーエリア　最大6週分の領域を作成
+            GridLayout:
+                cols:1
+                rows:7
+                WeekLabel:
+                    size_hint_y:0.1
+                WeekButton:
+                    id:w0
+                    size_hint_y:0.15
+                WeekButton:
+                    id:w1
+                    size_hint_y:0.15
+                WeekButton:
+                    id:w2
+                    size_hint_y:0.15
+                WeekButton:
+                    id:w3
+                    size_hint_y:0.15
+                WeekButton:
+                    id:w4
+                    size_hint_y:0.15
+                WeekButton:
+                    id:w5
+                    size_hint_y:0.15
+            #-----------------------------------------------------------------------
+            # 制御エリア
+            GridLayout:
+                cols:4
+                rows:1
+                size_hint_y:0.15
+                MenuButton:
+                    text: "<"
+                    on_release: root.menu_sw('prev')
+                MenuButton:
+                    text: ">"
+                    on_release: root.menu_sw('next')
+                MenuButton:
+                    text: "-"
+                    on_release: root.menu_sw('down')
+                MenuButton:
+                    text: "+"
+                    on_release: root.menu_sw('up')
+#-----------------------------------------------------------------------
+# Label用バックグラウンドカラー定義
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+#-----------------------------------------------------------------------
+# ヘッダレイアウト
+<UpperButton@Button>:   # ボタンレイアウト
+    font_size:self.width/6
+    background_color: .34, .45, .29, 1
+<DateLabel@Label+BackgroundColor>:  # 日時ラベルレイアウト
+    background_color: .65,.65,.24, 1
+    font_size:self.width/10
+#-----------------------------------------------------------------------
+# 制御ボタンレイアウト     
+<MenuButton@Button>:
+    font_size: self.width/4
+    background_color: .75,.75,.34, 1
+#-----------------------------------------------------------------------
+# 日のラベル
+<DayLabel@Label+BackgroundColor>:
+    background_color: .4,.4,.1,1
+    font_size:self.width/3
+#-----------------------------------------------------------------------
+# 曜日名レイアウト
+<WeekLabel@BoxLayout>:
+    DayLabel:
+        text:"月"
+    DayLabel:
+        text:"火"
+    DayLabel:
+        text:"水"
+    DayLabel:
+        text:"木"
+    DayLabel:
+        text:"金"
+    DayLabel:
+        background_color: .1,.1,.5,1
+        text:"土"
+    DayLabel:
+        background_color: .5,.1,.1,1
+        text:"日"
+#-----------------------------------------------------------------------
+# 日レイアウト
+<DayButton@BoxLayout>:
+    orientation: 'vertical'
+    DayLabel:
+        size_hint_y: 0.1
+    DayLabel:
+        id:lbl_day
+        size_hint_y: 0.9
+#-----------------------------------------------------------------------
+# 週レイアウト
+<WeekButton@BoxLayout>:
+    DayButton:
+        id:lbl_weekday0
+    DayButton:
+        id:lbl_weekday1
+    DayButton:
+        id:lbl_weekday2
+    DayButton:
+        id:lbl_weekday3
+    DayButton:
+        id:lbl_weekday4
+    DayButton:
+        id:lbl_weekday5
+    DayButton:
+        id:lbl_weekday6
+#-----------------------------------------------------------------------
+# 終了確認ダイアログ
+<PopupExitDialog>:
+    title: '確認'
+    size_hint: 0.6, 0.8 
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: 0.2
+            font_size:14
+            text: '選択してください'
+        Button:
+            size_hint_y: 0.2
+            font_size:14
+            text: 'プログラム終了'
+            on_release: root.exec_exit()
+        Button:
+            size_hint_y: 0.2
+            font_size:14
+            text: 'キャンセル'
+            on_press: root.dismiss()
